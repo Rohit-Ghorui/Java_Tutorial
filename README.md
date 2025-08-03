@@ -337,5 +337,197 @@ String binary = String.format("%8s", Integer.toBinaryString(5)).replace(' ', '0'
 System.out.println("Value is: " + a);
 System.out.printf("Value is: %d\n", a);
 ```
+## ✅ Java Strings & Their Methods
 
-Let me know if you'd like this styled as a real README with badges, or uploaded to GitHub!
+### 🔹 What is a String in Java?
+
+A `String` is a sequence of characters.
+
+* Strings are **immutable**, meaning once created, they cannot be changed.
+* Defined in the `java.lang` package.
+
+---
+
+### 🔹 Declaring Strings
+
+```java
+String s1 = "Hello";                    // Using string literal
+String s2 = new String("World");       // Using new keyword
+```
+
+---
+
+### 🔹 Commonly Used String Methods
+
+| Method                     | Description                                   | Example                                  |
+| -------------------------- | --------------------------------------------- | ---------------------------------------- |
+| `length()`                 | Returns number of characters                  | `s.length()` → `5`                       |
+| `charAt(int index)`        | Character at specific index                   | `s.charAt(1)` → `'e'`                    |
+| `substring(beginIndex)`    | Substring from index to end                   | `s.substring(2)` → "llo"                 |
+| `substring(beg, end)`      | Substring from begin to end-1                 | `s.substring(0, 2)` → "He"               |
+| `equals(String)`           | Compares two strings                          | `s1.equals(s2)`                          |
+| `equalsIgnoreCase(String)` | Case-insensitive comparison                   | `s1.equalsIgnoreCase("hello")`           |
+| `compareTo(String)`        | Lexicographical comparison                    | `s1.compareTo("Hi")`                     |
+| `toLowerCase()`            | Converts string to lowercase                  | `"Java".toLowerCase()` → "java"          |
+| `toUpperCase()`            | Converts string to uppercase                  | `"java".toUpperCase()` → "JAVA"          |
+| `trim()`                   | Removes leading/trailing spaces               | `" Hello ".trim()` → "Hello"             |
+| `contains(String)`         | Checks if string contains substring           | `s.contains("el")` → `true`              |
+| `replace(a, b)`            | Replaces characters or substrings             | `s.replace("l", "x")` → "Hexxo"          |
+| `split(String)`            | Splits string into array by regex/delimiter   | `"a,b,c".split(",")` → `["a", "b", "c"]` |
+| `indexOf(String)`          | Index of first occurrence                     | `s.indexOf("l")` → `2`                   |
+| `lastIndexOf(String)`      | Index of last occurrence                      | `s.lastIndexOf("l")` → `3`               |
+| `isEmpty()`                | Checks if string is empty                     | `"".isEmpty()` → `true`                  |
+| `startsWith(String)`       | Checks if string starts with specified prefix | `s.startsWith("He")` → `true`            |
+| `endsWith(String)`         | Checks if string ends with specified suffix   | `s.endsWith("lo")` → `true`              |
+
+---
+
+### 🔹 String Concatenation
+
+```java
+String a = "Java";
+String b = "Rocks";
+String c = a + " " + b;  // Output: Java Rocks
+```
+
+---
+
+### 🔹 Using `==` vs `.equals()` for String Comparison
+
+| Operator/Method | Compares            | Returns true if                      | Use Case                                 |
+| --------------- | ------------------- | ------------------------------------ | ---------------------------------------- |
+| `==`            | References (memory) | Both references point to same object | Use only when comparing memory addresses |
+| `.equals()`     | Content             | Actual string contents are equal     | Preferred for string value comparison    |
+
+#### 🔸 Example:
+
+```java
+String s1 = "Hello";
+String s2 = "Hello";
+String s3 = new String("Hello");
+
+System.out.println(s1 == s2);       // true (same literal pool reference)
+System.out.println(s1 == s3);       // false (different object)
+System.out.println(s1.equals(s3));  // true (same content)
+```
+
+✅ Use `.equals()` when comparing values of strings.
+
+---
+
+### 🔹 String Literals vs `new String()`
+
+```java
+String s2 = "Hello";                   // String literal
+String s3 = new String("Hello");      // Using new keyword
+```
+
+* **String literals** are stored in the **String pool** (shared in memory).
+* When you use `new`, Java creates a **new object in heap memory**, even if the content is the same.
+
+#### 🔸 Comparison:
+
+```java
+String s2 = "Hello";
+String s3 = new String("Hello");
+
+System.out.println(s2 == s3);       // false (different memory)
+System.out.println(s2.equals(s3));  // true (same content)
+```
+
+✅ Prefer string literals unless object duplication is required.
+
+---
+
+### 🔹 Mutable Alternatives
+
+#### ✅ StringBuilder (Not thread-safe, faster)
+
+```java
+StringBuilder sb = new StringBuilder("Hello");
+sb.append(" World");
+System.out.println(sb); // Output: Hello World
+```
+
+#### ✅ StringBuffer (Thread-safe version)
+
+```java
+StringBuffer sb = new StringBuffer("Hi");
+sb.append(" there");
+System.out.println(sb); // Output: Hi there
+```
+
+---
+
+## ✅ StringBuilder vs StringBuffer in Java
+
+### 🔹 Why Not Use String for Modifications?
+
+* `String` is immutable in Java.
+* Every time you modify a `String`, a new object is created in memory.
+* This is inefficient when you need frequent changes (like in loops or concatenations).
+
+---
+
+### ✅ StringBuilder
+
+* **Mutable**: You can modify contents without creating new objects.
+* **Not Thread-Safe**: No synchronization; not safe in multi-threaded environments.
+* **Faster** than `StringBuffer` due to lack of synchronization.
+* **Recommended for single-threaded programs.**
+
+#### 🔸 Example:
+
+```java
+StringBuilder sb = new StringBuilder("Java");
+sb.append(" is");
+sb.append(" awesome");
+System.out.println(sb);  // Output: Java is awesome
+```
+
+#### 🔸 Common Methods:
+
+| Method                     | Description                            |
+| -------------------------- | -------------------------------------- |
+| `append(String)`           | Adds string to the end                 |
+| `insert(int, str)`         | Inserts string at specified index      |
+| `delete(start, end)`       | Deletes characters from start to end-1 |
+| `reverse()`                | Reverses the string                    |
+| `replace(start, end, str)` | Replaces part of the string            |
+| `toString()`               | Converts StringBuilder to String       |
+
+---
+
+### ✅ StringBuffer
+
+* **Mutable** and **Thread-Safe**: Methods are synchronized.
+* **Slower** than `StringBuilder` due to synchronization overhead.
+* **Recommended for multi-threaded applications** where multiple threads modify the same string.
+
+#### 🔸 Example:
+
+```java
+StringBuffer sb = new StringBuffer("Hello");
+sb.append(" World");
+System.out.println(sb);  // Output: Hello World
+```
+
+---
+
+### 🔍 String vs StringBuilder vs StringBuffer
+
+| Feature     | String           | StringBuilder        | StringBuffer        |
+| ----------- | ---------------- | -------------------- | ------------------- |
+| Mutable     | ❌ (Immutable)    | ✅ (Mutable)          | ✅ (Mutable)         |
+| Thread-Safe | ✅ (Immutable)    | ❌                    | ✅                   |
+| Performance | Slow for changes | Fastest (no lock)    | Slower (with lock)  |
+| Use Case    | Read-only data   | Single-threaded mods | Multi-threaded mods |
+
+---
+
+### 🧠 Tip:
+
+If you're repeatedly modifying strings (e.g., in loops or data processing), prefer:
+
+* `StringBuilder` for speed
+* `StringBuffer` for thread safety
