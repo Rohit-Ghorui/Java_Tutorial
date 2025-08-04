@@ -531,3 +531,432 @@ If you're repeatedly modifying strings (e.g., in loops or data processing), pref
 
 * `StringBuilder` for speed
 * `StringBuffer` for thread safety
+
+
+# Java OOP Concepts 
+
+This document covers the core concepts of Object-Oriented Programming (OOP) in Java: Encapsulation, Polymorphism, Abstraction, and Inheritance.
+
+---
+
+## 🔐 Encapsulation
+
+Encapsulation is the process of **binding data (variables) and methods** that manipulate that data into a single unit (class), while **restricting access** to some components.
+
+### 🧠 Key Concepts
+
+| Concept          | Description                                                  |
+| ---------------- | ------------------------------------------------------------ |
+| Data Hiding      | Prevents external code from directly accessing internal data |
+| Access Modifiers | Controls access (`private`, `public`, etc.)                  |
+| Getters/Setters  | Provides controlled access to private fields                 |
+| Maintainability  | Changes are localized in the class                           |
+
+### 🌟 Benefits
+
+* ✅ Controls how data is accessed and modified
+* ✅ Prevents accidental changes from outside code
+* ✅ Improves security and maintainability
+* ✅ Helps achieve loose coupling
+
+### 🛆 Real-world Analogy
+
+Think of a medicine capsule. You don’t know its internal contents but know what it does. Similarly, encapsulated classes hide their implementation.
+
+### ✅ Example:
+
+```java
+class Student {
+    private String name;
+    private int age;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        if(age > 0) {
+            this.age = age;
+        }
+    }
+}
+```
+
+---
+
+## 🔄 Polymorphism
+
+Polymorphism means "many forms". It allows a single interface to represent different underlying forms (data types).
+
+### 🧠 Types
+
+| Type         | Also Known As      | Resolved At  |
+| ------------ | ------------------ | ------------ |
+| Compile-time | Method Overloading | Compile time |
+| Runtime      | Method Overriding  | Runtime      |
+
+### 1️⃣ Compile-time Polymorphism (Overloading)
+
+Same method name with different parameter lists in the same class.
+
+```java
+class MathUtils {
+    int add(int a, int b) { return a + b; }
+    double add(double a, double b) { return a + b; }
+    int add(int a, int b, int c) { return a + b + c; }
+}
+```
+
+### 2️⃣ Runtime Polymorphism (Overriding)
+
+Subclass provides specific implementation of superclass method.
+
+```java
+class Animal {
+    void sound() {
+        System.out.println("Animal sound");
+    }
+}
+class Dog extends Animal {
+    void sound() {
+        System.out.println("Dog barks");
+    }
+}
+```
+
+### 🧠 Summary
+
+| Feature               | Overloading    | Overriding                |
+| --------------------- | -------------- | ------------------------- |
+| Parameters            | Must differ    | Must be same              |
+| Inheritance Required? | No             | Yes                       |
+| Return Type           | Can differ     | Must be same or covariant |
+| Access Modifier       | No restriction | Cannot reduce visibility  |
+
+---
+
+## 🧪 Abstraction
+
+Abstraction is hiding implementation details and showing only the functionality.
+
+### 🔍 Achieved By
+
+1. Abstract Classes
+2. Interfaces
+
+### 1️⃣ Abstract Class
+
+```java
+abstract class Animal {
+    abstract void sound();
+    void sleep() {
+        System.out.println("Sleeping...");
+    }
+}
+```
+
+### 2️⃣ Interface
+
+```java
+interface Vehicle {
+    void start();
+}
+class Car implements Vehicle {
+    public void start() {
+        System.out.println("Car starts with key");
+    }
+}
+```
+
+### 🧠 Comparison Table
+
+| Feature      | Abstract Class      | Interface                    |
+| ------------ | ------------------- | ---------------------------- |
+| Method Types | Abstract + Concrete | Abstract, Default, Static    |
+| Inheritance  | Single              | Multiple                     |
+| Constructors | Yes                 | No                           |
+| Field Access | Any                 | Always `public static final` |
+
+---
+
+## 🧜‍♂️ Inheritance
+
+Inheritance allows one class to acquire properties and methods of another class.
+
+### 📊 Benefits
+
+* Reuse existing code
+* Reduces redundancy
+* Enables polymorphism
+* Supports hierarchical classification
+
+### 🔧 Syntax
+
+```java
+class Parent {
+    void display() { System.out.println("Parent"); }
+}
+class Child extends Parent {
+    void show() { System.out.println("Child"); }
+}
+```
+
+### 👨‍👩‍👦 Types of Inheritance
+
+| Type                  | Supported? | Description                              |
+| --------------------- | ---------- | ---------------------------------------- |
+| Single                | ✅          | One class inherits another               |
+| Multilevel            | ✅          | Chain of inheritance                     |
+| Hierarchical          | ✅          | Multiple classes inherit same superclass |
+| Multiple (classes)    | ❌          | Not supported                            |
+| Multiple (interfaces) | ✅          | Supported                                |
+
+### ⚠️ Diamond Problem
+
+Java doesn't support multiple class inheritance to avoid ambiguity:
+
+```java
+class A { void show() {} }
+class B extends A {}
+class C extends A {}
+class D extends B, C {} // ❌ Not allowed in Java
+```
+
+### 🚀 `super` Keyword
+
+Used to access parent class constructor or methods:
+
+```java
+class Dog extends Animal {
+    Dog() {
+        super(); // Calls Animal constructor
+    }
+    void eat() {
+        super.eat();
+    }
+}
+```
+
+---
+❌ Why Java Does Not Allow Multiple Inheritance ?
+
+👉 To Avoid Ambiguity and Ensure Simplicity in the Inheritance Hierarchy.
+
+💎 The Problem: Ambiguity (Diamond Problem)
+
+Consider this:
+
+```java
+class A {
+    void show() {
+        System.out.println("From A");
+    }
+}
+
+class B extends A {
+    void show() {
+        System.out.println("From B");
+    }
+}
+
+class C extends A {
+    void show() {
+        System.out.println("From C");
+    }
+}
+```
+
+// Now what if you want to do:
+class D extends B, C {} // ❌ Not allowed in Java
+
+🔴 Issue:
+
+If both B and C override show(), and D inherits from both:
+
+➡️ Which version of show() should D use?
+
+B.show() or C.show()?
+
+
+## 📅 Summary Table
+
+| Concept       | Description                                                  |
+| ------------- | ------------------------------------------------------------ |
+| Encapsulation | Binding data and methods, data hiding                        |
+| Polymorphism  | One interface, many implementations (Overloading/Overriding) |
+| Abstraction   | Hiding internal details, only showing functionality          |
+| Inheritance   | Reusing code via parent-child class relationships            |
+
+---
+
+
+
+## 🔷 1. this Keyword in Java
+
+✅ **What is `this`?**
+
+* The `this` keyword is a reference to the current object of the class. It's used to avoid ambiguity, especially when local variables shadow instance variables.
+
+### 🧰 Use Cases of `this`
+
+🔸 a) **Refer to current class instance variable**
+
+```java
+class Student {
+    int id;
+    String name;
+
+    Student(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+}
+```
+
+🔸 b) **Call current class method**
+
+```java
+void display() {
+    this.show();
+}
+void show() {
+    System.out.println("Hello");
+}
+```
+
+🔸 c) **Invoke current class constructor**
+
+```java
+Student() {
+    this(10);
+    System.out.println("Default constructor");
+}
+
+Student(int x) {
+    System.out.println("Parameterized constructor");
+}
+```
+
+🔸 d) **Return current object**
+
+```java
+Student getStudent() {
+    return this;
+}
+```
+
+---
+
+## 🔷 2. super Keyword in Java
+
+✅ **What is `super`?**
+
+* The `super` keyword is used to refer to the immediate parent class. It’s often used in inheritance.
+
+### 🧰 Use Cases of `super`
+
+🔸 a) **Call parent class method (even if overridden)**
+
+```java
+class Animal {
+    void sound() { System.out.println("Animal sound"); }
+}
+class Dog extends Animal {
+    void sound() {
+        super.sound();
+        System.out.println("Dog barks");
+    }
+}
+```
+
+🔸 b) **Access parent class variables**
+
+```java
+class Animal {
+    String type = "Animal";
+}
+class Dog extends Animal {
+    String type = "Dog";
+    void printType() {
+        System.out.println(super.type);
+    }
+}
+```
+
+🔸 c) **Call parent class constructor**
+
+```java
+class Animal {
+    Animal(String name) {
+        System.out.println("Animal: " + name);
+    }
+}
+class Dog extends Animal {
+    Dog() {
+        super("Buddy");
+    }
+}
+```
+
+---
+
+## 🔷 3. final Keyword in Java
+
+✅ **What is `final`?**
+
+* `final` is a modifier used to indicate that something cannot be changed. It can be applied to variables, methods, or classes.
+
+### 🧰 Use Cases of `final`
+
+🔸 a) **Final Variable → Cannot be reassigned**
+
+```java
+final int x = 10;
+x = 20; // ❌ Error
+```
+
+🔸 b) **Final Method → Cannot be overridden**
+
+```java
+class Parent {
+    final void show() { }
+}
+class Child extends Parent {
+    // void show() {} ❌ Error
+}
+```
+
+🔸 c) **Final Class → Cannot be extended**
+
+```java
+final class Animal { }
+// class Dog extends Animal {} ❌ Error
+```
+
+---
+
+## 🧠 Combined Comparison Table
+
+| Keyword | Refers to              | Used In                 | Use Cases                                  |
+| ------- | ---------------------- | ----------------------- | ------------------------------------------ |
+| `this`  | Current object         | Within class            | Resolve shadowing, call method/constructor |
+| `super` | Parent class           | In inherited class      | Access parent constructor or variable      |
+| `final` | Indicates immutability | Variable, method, class | Prevent override/inheritance/reassignment  |
+
+---
+
+## 🚦 Quick Summary in One Line Each:
+
+✅ `this` → refers to the current object
+✅ `super` → refers to the parent class
+✅ `final` → prevents change (inheritance, override, or reassignment)
+
+
